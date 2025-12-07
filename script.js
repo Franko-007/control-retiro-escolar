@@ -1,17 +1,67 @@
-// Lista de alumnos V-A-C-Í-A (para que cargues tus propios datos)
-const DATOS_ALUMNOS = []; 
+// Usamos let para que el array de alumnos pueda ser modificado
+let DATOS_ALUMNOS = []; 
 
 // Mapeo para rastrear el estado de cada alumno (0: Pendiente, 1: Avisado, 2: Retirado)
 const estados = {}; 
 
-// Función para renderizar (dibujar) la lista inicial
+// Función para guardar los alumnos en el almacenamiento local del navegador
+function guardarAlumnos() {
+    localStorage.setItem('alumnos', JSON.stringify(DATOS_ALUMNOS));
+}
+
+// Función para cargar los alumnos del almacenamiento local del navegador
+function cargarAlumnos() {
+    const alumnosGuardados = localStorage.getItem('alumnos');
+    if (alumnosGuardados) {
+        DATOS_ALUMNOS = JSON.parse(alumnosGuardados);
+    }
+}
+
+// Función para agregar un nuevo alumno
+function agregarAlumno(event) {
+    event.preventDefault(); // Evita que la página se recargue
+
+    const inputNombre = document.getElementById('input-nombre');
+    const inputCurso = document.getElementById('input-curso');
+
+    const nombre = inputNombre.value.trim();
+    const curso = inputCurso.value.trim();
+
+    if (nombre === "" || curso === "") {
+        alert("Por favor, ingrese el nombre y el curso.");
+        return;
+    }
+
+    // Crea un ID único (usando la fecha actual como un ID simple)
+    const nuevoId = Date.now(); 
+
+    const nuevoAlumno = { 
+        id: nuevoId, 
+        nombre: nombre, 
+        curso: curso 
+    };
+
+    DATOS_ALUMNOS.push(nuevoAlumno);
+    guardarAlumnos(); // Guarda la lista actualizada
+    renderizarLista(); // Vuelve a dibujar la lista
+
+    // Limpia el formulario
+    inputNombre.value = '';
+    inputCurso.value = '';
+}
+
+
+// --------------------------------------------------------------------------
+// LAS FUNCIONES DE ESTADO Y RENDERIZACIÓN DEBEN PERMANECER IGUAL
+// --------------------------------------------------------------------------
+
 function renderizarLista() {
     const lista = document.getElementById('lista-alumnos');
-    lista.innerHTML = ''; // Limpia la lista
+    lista.innerHTML = ''; 
 
     // Verificación de lista vacía
     if (DATOS_ALUMNOS.length === 0) {
-        lista.innerHTML = '<li class="no-data">❌ La lista está vacía. Por favor, añada alumnos para comenzar a operar.</li>';
+        lista.innerHTML = '<li class="no-data">❌ La lista está vacía. Use el formulario para añadir alumnos.</li>';
         return; 
     }
     
@@ -25,7 +75,6 @@ function renderizarLista() {
         item.classList.add('alumno-item');
         item.setAttribute('data-id', alumno.id);
 
-        // Agrega la clase de color según el estado
         aplicarClaseDeEstado(item, estados[alumno.id]);
 
         item.innerHTML = `
@@ -33,36 +82,27 @@ function renderizarLista() {
             <p>Curso: ${alumno.curso} | Estado: <span class="estado-texto">Pendiente</span></p>
         `;
 
-        // Añade el evento de clic para cambiar el estado
         item.addEventListener('click', () => cambiarEstado(alumno.id, item));
 
         lista.appendChild(item);
     });
 }
 
-// Función para cambiar el estado y actualizar la interfaz
 function cambiarEstado(id, itemElemento) {
-    // El estado avanza cíclicamente: 0 -> 1 -> 2 -> 0 (Pendiente -> Avisado -> Retirado -> Pendiente)
     let nuevoEstado = (estados[id] + 1) % 3;
     estados[id] = nuevoEstado;
-
-    // Actualiza las clases y el texto
     aplicarClaseDeEstado(itemElemento, nuevoEstado);
 }
 
-// Función auxiliar para aplicar las clases CSS y el texto de estado
 function aplicarClaseDeEstado(item, estado) {
-    // Elimina todas las clases de estado previas
     item.classList.remove('estado-avisado', 'estado-retirado');
-
     const estadoTextoElemento = item.querySelector('.estado-texto');
-    
     let nombreEstado = 'Pendiente';
 
-    if (estado === 1) { // 🟡 Avisado
+    if (estado === 1) { 
         item.classList.add('estado-avisado');
         nombreEstado = 'AVISADO (Esperando Retiro)';
-    } else if (estado === 2) { // 🟢 Retirado
+    } else if (estado === 2) { 
         item.classList.add('estado-retirado');
         nombreEstado = 'RETIRADO (Entregado)';
     }
@@ -72,5 +112,18 @@ function aplicarClaseDeEstado(item, estado) {
     }
 }
 
-// Inicializar la aplicación cuando el DOM esté cargado
-document.addEventListener('DOMContentLoaded', renderizarLista);
+// --------------------------------------------------------------------------
+// INICIALIZACIÓN
+// --------------------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Carga los alumnos guardados antes de renderizar
+    cargarAlumnos(); 
+    
+    // 2. Vincula la función 'agregarAlumno' al evento 'submit' del formulario
+    const form = document.getElementById('form-agregar-alumno');
+    form.addEventListener('submit', agregarAlumno);
+    
+    // 3. Renderiza la lista
+    renderizarLista();
+});
