@@ -1,53 +1,123 @@
-/* ... (Mantener todos los estilos previos) ... */
+// Usamos let para que el array de alumnos pueda ser modificado
+let DATOS_ALUMNOS = []; 
 
-/* Estilos para el Formulario de Agregar Alumno */
-.add-form {
-    background-color: #e9ecef;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// Mapeo para rastrear el estado de cada alumno (0: Retiro en Espera, 1: Llamado/Avisado, 2: Retirado)
+const estados = {}; 
+
+// --- Funciones de Almacenamiento ---
+
+function guardarAlumnos() {
+    localStorage.setItem('alumnos', JSON.stringify(DATOS_ALUMNOS));
 }
 
-.add-form h2 {
-    margin-top: 0;
-    color: #007bff;
-    font-size: 1.4em;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+function cargarAlumnos() {
+    const alumnosGuardados = localStorage.getItem('alumnos');
+    if (alumnosGuardados) {
+        DATOS_ALUMNOS = JSON.parse(alumnosGuardados);
+    }
 }
 
-.add-form input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+// --- Funciones de Formulario ---
+
+function agregarAlumno(event) {
+    event.preventDefault(); 
+
+    const inputNombre = document.getElementById('input-nombre');
+    const inputCurso = document.getElementById('input-curso');
+
+    const nombre = inputNombre.value.trim();
+    const curso = inputCurso.value.trim();
+
+    if (nombre === "" || curso === "") {
+        alert("Por favor, ingrese el nombre y el curso.");
+        return;
+    }
+
+    const nuevoId = Date.now(); 
+
+    const nuevoAlumno = { 
+        id: nuevoId, 
+        nombre: nombre, 
+        curso: curso 
+    };
+
+    DATOS_ALUMNOS.push(nuevoAlumno);
+    guardarAlumnos(); 
+    renderizarLista(); 
+
+    inputNombre.value = '';
+    inputCurso.value = '';
 }
 
-.add-form button {
-    background-color: #28a745; /* Verde para el botón de agregar */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    width: 100%;
-    transition: background-color 0.2s;
+
+// --- Funciones de Interacción y Renderización ---
+
+function renderizarLista() {
+    const lista = document.getElementById('lista-alumnos');
+    lista.innerHTML = ''; 
+
+    if (DATOS_ALUMNOS.length === 0) {
+        lista.innerHTML = '<li class="no-data">❌ La lista está vacía. Use el formulario para añadir alumnos.</li>';
+        return; 
+    }
+    
+    DATOS_ALUMNOS.forEach(alumno => {
+        // Inicializa el estado si no existe (por defecto: 0 - Retiro en Espera / Blanco)
+        if (!estados[alumno.id]) {
+            estados[alumno.id] = 0;
+        }
+
+        const item = document.createElement('li');
+        item.classList.add('alumno-item');
+        item.setAttribute('data-id', alumno.id);
+
+        aplicarClaseDeEstado(item, estados[alumno.id]);
+
+        item.innerHTML = `
+            <h3>${alumno.nombre}</h3>
+            <p>Curso: ${alumno.curso} | Estado: <span class="estado-texto">Retiro en Espera</span></p>
+        `;
+
+        item.addEventListener('click', () => cambiarEstado(alumno.id, item));
+
+        lista.appendChild(item);
+    });
 }
 
-.add-form button:hover {
-    background-color: #1e7e34;
+function cambiarEstado(id, itemElemento) {
+    // El estado avanza cíclicamente: 0 -> 1 -> 2 -> 0 
+    let nuevoEstado = (estados[id] + 1) % 3;
+    estados[id] = nuevoEstado;
+    aplicarClaseDeEstado(itemElemento, nuevoEstado);
 }
 
-/* ... (Mantener todos los estilos de lista y footer) ... */
+function aplicarClaseDeEstado(item, estado) {
+    // 1. Elimina todas las clases de estado previas
+    item.classList.remove('estado-avisado', 'estado-retirado');
 
-/* Estilos de la Lista de Alumnos */
-#lista-alumnos {
-    list-style: none;
-    padding: 0;
+    const estadoTextoElemento = item.querySelector('.estado-texto');
+    let nombreEstado = 'Retiro en Espera'; // Estado por defecto (Blanco/Gris)
+
+    if (estado === 1) { // 🟡 Llamado (Avisado)
+        item.classList.add('estado-avisado');
+        nombreEstado = 'LLAMADO (Alumno en camino)';
+    } else if (estado === 2) { // 🟢 Retirado (Entregado)
+        item.classList.add('estado-retirado');
+        nombreEstado = 'RETIRADO (Entregado)';
+    }
+
+    if (estadoTextoElemento) {
+        estadoTextoElemento.textContent = nombreEstado;
+    }
 }
-/* ... (El resto de estilos de estado: .alumno-item, .estado-avisado, .estado-retirado, etc.) ... */
+
+// --- Inicialización ---
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarAlumnos(); 
+    
+    const form = document.getElementById('form-agregar-alumno');
+    form.addEventListener('submit', agregarAlumno);
+    
+    renderizarLista();
+});
