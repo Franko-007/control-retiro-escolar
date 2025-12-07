@@ -1,12 +1,12 @@
 /* ======================================= */
 /* 1. Estilos Generales y Tipografía */
-/* ... (Se mantienen igual) ... */
 /* ======================================= */
 body {
+    /* Fuente moderna */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     margin: 0;
     padding: 0;
-    background-color: #eef1f5; 
+    background-color: #eef1f5; /* Fondo suave */
     color: #333;
     display: flex;
     flex-direction: column;
@@ -15,7 +15,7 @@ body {
 }
 
 header {
-    background-color: #0056b3; 
+    background-color: #0056b3; /* Azul oscuro */
     color: white;
     padding: 25px 20px;
     width: 100%;
@@ -36,9 +36,19 @@ header h1 {
     padding: 0 10px;
 }
 
+footer {
+    margin-top: auto; 
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    color: #a0a0a0;
+    background-color: #f8f9fa;
+    font-size: 0.85em;
+    border-top: 1px solid #e1e8f0;
+}
+
 /* ======================================= */
-/* 2. Estilos del Formulario */
-/* ... (Se mantienen igual) ... */
+/* 2. Estilos del Formulario (Añadir Alumno) */
 /* ======================================= */
 .add-form {
     background-color: white;
@@ -74,7 +84,7 @@ header h1 {
 }
 
 .add-form button {
-    background-color: #20c997; 
+    background-color: #20c997; /* Verde menta */
     color: white;
     padding: 12px 15px;
     border: none;
@@ -93,7 +103,6 @@ header h1 {
 
 /* ======================================= */
 /* 3. Estilos de la Lista de Alumnos */
-/* ... (Se mantienen igual) ... */
 /* ======================================= */
 #lista-alumnos {
     list-style: none;
@@ -101,14 +110,14 @@ header h1 {
 }
 
 .alumno-item {
-    background-color: white;
+    background-color: white; /* Estado 0: Retiro en Espera (Blanco) */
     margin-bottom: 12px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border-left: 6px solid #e0e0e0; 
+    border-left: 6px solid #e0e0e0; /* Barra lateral gris claro por defecto */
 }
 
 .alumno-item:hover {
@@ -134,35 +143,6 @@ header h1 {
     font-weight: bold;
 }
 
-/* ======================================= */
-/* 4. Clases de Estado (Colores Llamativos)*/
-/* ======================================= */
-
-/* 🟡 Llamado/Avisado */
-.estado-avisado {
-    background-color: #fff9e6; 
-    color: #725a00; 
-    border-left: 6px solid #ffc107; 
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2); 
-}
-
-/* 🟢 Retirado (Ajustado a Verde Sólido) */
-.estado-retirado {
-    /* Fondo Verde sólido y contrastante */
-    background-color: #28a745; 
-    /* Texto Blanco para contraste máximo */
-    color: white; 
-    /* Borde del mismo color */
-    border-left: 6px solid #1e7e34; 
-    /* Sombra Verde clara */
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.5);
-}
-
-/* Asegura que el texto secundario también sea blanco para la legibilidad en verde */
-.estado-retirado p {
-    color: white !important;
-}
-
 /* Estilo para lista vacía */
 .no-data {
     padding: 25px;
@@ -176,13 +156,27 @@ header h1 {
     font-style: italic;
 }
 
-footer {
-    margin-top: auto; 
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-    color: #a0a0a0;
-    background-color: #f8f9fa;
-    font-size: 0.85em;
-    border-top: 1px solid #e1e8f0;
+/* ======================================= */
+/* 4. Clases de Estado (Colores Llamativos)*/
+/* ======================================= */
+
+/* 🟡 Llamado/Avisado (Amarillo Oscurecido) */
+.estado-avisado {
+    background-color: #ffe082; 
+    color: #4a4a4a; 
+    border-left: 6px solid #ffb300; 
+    box-shadow: 0 2px 8px rgba(255, 179, 0, 0.3); 
+}
+
+/* 🟢 Retirado (Verde Sólido y Llamativo) */
+.estado-retirado {
+    background-color: #28a745; 
+    color: white; 
+    border-left: 6px solid #1e7e34; 
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.5);
+}
+
+/* Asegura que el texto secundario sea blanco para la legibilidad en verde */
+.estado-retirado p {
+    color: white !important;
 }
