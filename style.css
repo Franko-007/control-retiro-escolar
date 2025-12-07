@@ -1,26 +1,25 @@
 /* ======================================= */
-/* 1. Estilos Generales y Tipografía (Base)*/
+/* 1. Estilos Generales y Tipografía */
+/* ... (Se mantienen igual) ... */
 /* ======================================= */
 body {
-    /* Cambio de fuente a una sans-serif más moderna */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     margin: 0;
     padding: 0;
-    background-color: #eef1f5; /* Fondo más suave (Gris claro/azul) */
+    background-color: #eef1f5; 
     color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura */
+    min-height: 100vh;
 }
 
 header {
-    background-color: #0056b3; /* Azul oscuro más profesional */
+    background-color: #0056b3; 
     color: white;
     padding: 25px 20px;
     width: 100%;
     text-align: center;
-    /* Sombra más profunda y sutil */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); 
     z-index: 10;
 }
@@ -31,21 +30,22 @@ header h1 {
 }
 
 .container {
-    width: 95%; /* Mayor ancho en pantallas pequeñas */
-    max-width: 700px; /* Ancho máximo aumentado */
+    width: 95%; 
+    max-width: 700px; 
     margin: 20px auto;
     padding: 0 10px;
 }
 
 /* ======================================= */
-/* 2. Estilos del Formulario (Mejorado) */
+/* 2. Estilos del Formulario */
+/* ... (Se mantienen igual) ... */
 /* ======================================= */
 .add-form {
     background-color: white;
     padding: 25px;
-    border-radius: 12px; /* Esquinas más redondeadas */
+    border-radius: 12px; 
     margin-bottom: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra elevada */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .add-form h2 {
@@ -69,12 +69,12 @@ header h1 {
 }
 
 .add-form input[type="text"]:focus {
-    border-color: #007bff; /* Resalte al enfocarse */
+    border-color: #007bff; 
     outline: none;
 }
 
 .add-form button {
-    background-color: #20c997; /* Verde menta para 'Agregar' */
+    background-color: #20c997; 
     color: white;
     padding: 12px 15px;
     border: none;
@@ -93,6 +93,7 @@ header h1 {
 
 /* ======================================= */
 /* 3. Estilos de la Lista de Alumnos */
+/* ... (Se mantienen igual) ... */
 /* ======================================= */
 #lista-alumnos {
     list-style: none;
@@ -104,21 +105,20 @@ header h1 {
     margin-bottom: 12px;
     padding: 20px;
     border-radius: 10px;
-    /* Sombra más elegante */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border-left: 6px solid #e0e0e0; /* Barra lateral para estado por defecto */
+    border-left: 6px solid #e0e0e0; 
 }
 
 .alumno-item:hover {
-    transform: translateY(-2px); /* Efecto 3D al pasar el mouse */
+    transform: translateY(-2px); 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .alumno-item h3 {
     margin: 0 0 5px 0;
-    font-size: 1.3em; /* Nombre más grande */
+    font-size: 1.3em; 
     color: #0056b3;
 }
 
@@ -127,10 +127,9 @@ header h1 {
     font-size: 0.95em;
     color: #777;
     display: flex;
-    justify-content: space-between; /* Alinea estado a la derecha */
+    justify-content: space-between; 
 }
 
-/* Mejoramos la visibilidad del texto de estado */
 .estado-texto {
     font-weight: bold;
 }
@@ -139,23 +138,30 @@ header h1 {
 /* 4. Clases de Estado (Colores Llamativos)*/
 /* ======================================= */
 
-/* 🟡 Llamado/Avisado (Ahora más oscuro para mejor lectura) */
+/* 🟡 Llamado/Avisado */
 .estado-avisado {
-    background-color: #fff9e6; /* Fondo Amarillo muy claro */
-    color: #725a00; /* Texto oscuro */
-    border-left: 6px solid #ffc107; /* Barra Amarilla */
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2); /* Sombra de estado */
+    background-color: #fff9e6; 
+    color: #725a00; 
+    border-left: 6px solid #ffc107; 
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2); 
 }
 
-/* 🟢 Retirado (Verde oscuro y plano) */
+/* 🟢 Retirado (Ajustado a Verde Sólido) */
 .estado-retirado {
-    background-color: #e6ffed; /* Fondo Verde muy claro */
-    color: #1e7e34; /* Texto Verde oscuro */
-    border-left: 6px solid #28a745; /* Barra Verde */
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+    /* Fondo Verde sólido y contrastante */
+    background-color: #28a745; 
+    /* Texto Blanco para contraste máximo */
+    color: white; 
+    /* Borde del mismo color */
+    border-left: 6px solid #1e7e34; 
+    /* Sombra Verde clara */
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.5);
 }
 
-/* ⚪ Retiro en Espera (Blanco/Gris) - Ya cubierto por .alumno-item y su border-left gris */
+/* Asegura que el texto secundario también sea blanco para la legibilidad en verde */
+.estado-retirado p {
+    color: white !important;
+}
 
 /* Estilo para lista vacía */
 .no-data {
@@ -171,7 +177,7 @@ header h1 {
 }
 
 footer {
-    margin-top: auto; /* Empuja el footer hacia abajo */
+    margin-top: auto; 
     padding: 15px;
     width: 100%;
     text-align: center;
