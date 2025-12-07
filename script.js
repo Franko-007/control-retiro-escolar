@@ -1,20 +1,20 @@
-// Lista de alumnos de ejemplo con sus cursos
-const DATOS_ALUMNOS = [
-    { id: 1, nombre: "Ana López", curso: "1º B" },
-    { id: 2, nombre: "Benito Pérez", curso: "2º A" },
-    { id: 3, nombre: "Carla Gómez", curso: "1º B" },
-    { id: 4, nombre: "Daniela Ruiz", curso: "3º C" },
-    { id: 5, nombre: "Esteban Martín", curso: "2º A" }
-];
+// Lista de alumnos V-A-C-Í-A (para que cargues tus propios datos)
+const DATOS_ALUMNOS = []; 
 
 // Mapeo para rastrear el estado de cada alumno (0: Pendiente, 1: Avisado, 2: Retirado)
-const estados = {}; // Guardará { id_alumno: estado_actual }
+const estados = {}; 
 
 // Función para renderizar (dibujar) la lista inicial
 function renderizarLista() {
     const lista = document.getElementById('lista-alumnos');
     lista.innerHTML = ''; // Limpia la lista
 
+    // Verificación de lista vacía
+    if (DATOS_ALUMNOS.length === 0) {
+        lista.innerHTML = '<li class="no-data">❌ La lista está vacía. Por favor, añada alumnos para comenzar a operar.</li>';
+        return; 
+    }
+    
     DATOS_ALUMNOS.forEach(alumno => {
         // Inicializa el estado si no existe (por defecto: 0 - Pendiente)
         if (!estados[alumno.id]) {
@@ -48,9 +48,6 @@ function cambiarEstado(id, itemElemento) {
 
     // Actualiza las clases y el texto
     aplicarClaseDeEstado(itemElemento, nuevoEstado);
-    
-    // Muestra el nuevo estado en la consola para depuración
-    console.log(`Alumno ${id} - Nuevo Estado: ${obtenerNombreEstado(nuevoEstado)}`);
 }
 
 // Función auxiliar para aplicar las clases CSS y el texto de estado
@@ -72,15 +69,6 @@ function aplicarClaseDeEstado(item, estado) {
 
     if (estadoTextoElemento) {
         estadoTextoElemento.textContent = nombreEstado;
-    }
-}
-
-// Función auxiliar para obtener el nombre del estado (opcional, solo para consola)
-function obtenerNombreEstado(estado) {
-    switch (estado) {
-        case 1: return 'Avisado';
-        case 2: return 'Retirado';
-        default: return 'Pendiente';
     }
 }
 
