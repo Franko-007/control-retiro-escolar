@@ -68,7 +68,16 @@ header {
     border: 2px solid #1e7e34;
 }
 
-/* ⚪ Pendiente (Estado por defecto, se define en .alumno-item) */
+/* ⚪ Estilo para cuando no hay datos */
+.no-data {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    background-color: #eee;
+    border-radius: 8px;
+    list-style: none;
+    margin-top: 20px;
+}
 
 footer {
     margin-top: 20px;
